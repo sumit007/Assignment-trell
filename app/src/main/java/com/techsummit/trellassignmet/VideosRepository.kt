@@ -26,4 +26,15 @@ class VideosRepository {
     private fun getFileId(file: File): String {
         return file.nameWithoutExtension.replace(" ", "")
     }
+
+    fun updateBookmark(videoId: String) {
+        val bookmarkedVideos = BookmarkHelper.getListString()
+        if (bookmarkedVideos.contains(videoId)) {
+            bookmarkedVideos.remove(videoId)
+        } else {
+            bookmarkedVideos.add(videoId)
+        }
+
+        BookmarkHelper.saveListString(bookmarkedVideos)
+    }
 }

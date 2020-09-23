@@ -35,4 +35,8 @@ class VideosViewModel(private val videosRepository: VideosRepository) : ViewMode
 
     fun getVideos(): LiveData<VideoResult<List<Video>>> = videos
 
+    fun updateBookmark(videoId: String) {
+        videosRepository.updateBookmark(videoId)
+    }
+
 }

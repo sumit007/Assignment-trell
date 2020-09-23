@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity(), VideoAdapter.VideoBookmarkClicked {
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 		requestPermissions()
 		initViews()
-
-		videosViewModel =
-			ViewModelProviders.of(this, VideosViewModelFactory()).get(VideosViewModel::class.java)
 	}
 
 	private fun initViews() {
@@ -57,6 +54,9 @@ class MainActivity : AppCompatActivity(), VideoAdapter.VideoBookmarkClicked {
 	}
 
 	private fun loadVideos() {
+		videosViewModel =
+			ViewModelProviders.of(this, VideosViewModelFactory()).get(VideosViewModel::class.java)
+
 		videosViewModel.getVideos().observe(this, Observer {
 			when (it) {
 				is Success -> {
@@ -107,6 +107,6 @@ class MainActivity : AppCompatActivity(), VideoAdapter.VideoBookmarkClicked {
 	}
 
 	override fun onBookmarkBtnClicked(videoId: String) {
-
+		videosViewModel.updateBookmark(videoId)
 	}
 }
