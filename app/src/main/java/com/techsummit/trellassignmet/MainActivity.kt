@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -54,6 +55,29 @@ class MainActivity : AppCompatActivity() {
 		})
 	}
 
+	private fun loadVideos() {
+		videosViewModel.getVideos().observe(this, Observer {
+			when (it) {
+				is Success -> {
+					showVideos(it.data)
+				}
+				is Error -> {
+					showError(it.errorMessage)
+				}
+			}
+		})
+	}
+
+	private fun showVideos(videos: List<Video>) {
+		this.videos.clear()
+		this.videos.addAll(videos)
+		videosRv.adapter?.notifyDataSetChanged()
+	}
+
+	private fun showError(message: String) {
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+	}
+
 	private fun requestPermissions() {
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !== PackageManager.PERMISSION_GRANTED) {
 			if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -62,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 				ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
 			}
 		} else {
-			//goToVideos()
+			loadVideos()
 		}
 	}
 
@@ -71,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 			1 -> {
 				if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) === PackageManager.PERMISSION_GRANTED)) {
-						//goToVideos()
+						loadVideos()
 					}
 				} else {
 					Toast.makeText(this, "Cannot go further without granting permission", Toast.LENGTH_LONG).show()
