@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), VideoAdapter.VideoBookmarkClicked {
 				val lastVisiblePosition = (videosRv.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
 				videos.forEachIndexed { index, video ->
 					kotlin.run {
-						//video.player?.playWhenReady = index == lastVisiblePosition
+						video.player?.playWhenReady = index == lastVisiblePosition
 					}
 				}
 			}
