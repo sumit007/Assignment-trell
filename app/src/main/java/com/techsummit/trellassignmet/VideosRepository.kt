@@ -12,14 +12,13 @@ class VideosRepository {
     }
 
     private fun findVideos(dir: File, list: MutableList<Video>) {
-        //val bookmarkedVideos = SharedPreferenceHelper.getListString(PREF_KEY_BOOKMARK)
 
         for (file in dir.listFiles()) {
             if (file.isDirectory)
                 findVideos(file, list)
             else if (file.absolutePath.contains(".mp4")) {
                 val fileId = getFileId(file)
-                list.add(Video(getFileId(file), file.absolutePath))
+                list.add(Video(getFileId(file), file.absolutePath, file.name))
             }
         }
     }

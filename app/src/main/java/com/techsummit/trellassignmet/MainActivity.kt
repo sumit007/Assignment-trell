@@ -17,7 +17,7 @@ import com.techsummit.trellassignmet.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), VideoAdapter.VideoBookmarkClicked {
 
 	companion object {
 		private const val TAG = "MainActivity"
@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun initViews() {
 		videosRv.layoutManager = LinearLayoutManager(this)
+		binding.videosRv.adapter = VideoAdapter(videos, this)
 		PagerSnapHelper().attachToRecyclerView(videosRv)
 		videosRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -103,5 +104,9 @@ class MainActivity : AppCompatActivity() {
 				return
 			}
 		}
+	}
+
+	override fun onBookmarkBtnClicked(videoId: String) {
+
 	}
 }
